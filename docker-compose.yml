@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  db:
+    image: postgres:12.3
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: ["./run_web.sh"]
+    env_file:
+      - prod.env
+    volumes:
+      - .:/webapps
+    ports:
+      - "8000:8000"
+    links:
+      - db
+    depends_on:
+      - db
